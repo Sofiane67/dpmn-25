@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jeu du Nombre</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div class="game-container">
+    <h1>Devinez le nombre</h1>
+    <p>Entre 1 et 20</p>
+    <input type="number" id="guess" min="1" max="20" />
+    <button id="checkBtn">Vérifier</button>
+    <div class="message" id="message"></div>
+    <button class="play-again" id="againBtn">Rejouer</button>
+</div>
+<script>
+    let secretNumber = Math.floor(Math.random() * 20) + 1;
+    const guessInput = document.getElementById('guess');
+    const checkBtn = document.getElementById('checkBtn');
+    const messageEl = document.getElementById('message');
+    const againBtn = document.getElementById('againBtn');
+
+    checkBtn.addEventListener('click', () => {
+        const guess = Number(guessInput.value);
+        if (!guess || guess < 1 || guess > 20) {
+            messageEl.textContent = 'Entrez un nombre entre 1 et 20!';
+            messageEl.className = 'message';
+            guessInput.value = '';
+        } else if (guess < secretNumber) {
+            messageEl.textContent = 'Trop petit!';
+            messageEl.className = 'message too-low';
+            guessInput.value = '';
+        } else if (guess > secretNumber) {
+            messageEl.textContent = 'Trop grand!';
+            messageEl.className = 'message too-high';
+            guessInput.value = '';
+        } else {
+            messageEl.textContent = 'Bravo! Vous avez trouvé.';
+            messageEl.className = 'message correct';
+            againBtn.style.display = 'inline-block';
+            checkBtn.disabled = true;
+        }
+    });
+
+    againBtn.addEventListener('click', () => {
+        secretNumber = Math.floor(Math.random() * 20) + 1;
+        messageEl.textContent = '';
+        messageEl.className = 'message';
+        guessInput.value = '';
+        againBtn.style.display = 'none';
+        checkBtn.disabled = false;
+    });
+</script>
+</body>
+</html>
